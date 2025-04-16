@@ -2,3 +2,4 @@
 2-continent-map.pdf shows how the website would look like when the user selects a continent map to look further into. It is an interactive way of looking at the data.
 3-list-of-animals-in-country.pdf shows how the website would look like when a user clicks on a specific country on the map or on the list that is provided to the left of the continent map. A full list of all the animals that reside in a specific country are shown. 
 4-filter-usage.pdf shows the website when the filter is used. It is a very basic type of filter. 
+DISCLAIMER: WE DON'T KNOW HOW TO NAME OUR WEBSITE, SO WE ARE USING THE TITLE "WILD THANGS" AS A FILLER FOR NOW. IT IS NOT THE OFFICIAL NAME OF THE WEBSITE. 
