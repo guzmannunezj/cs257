@@ -25,11 +25,6 @@ CREATE TABLE populationStatus (
         status text
 );
 
-CREATE TABLE continents_countries (
-        continent_id integer,
-        country_id integer
-);
-
 CREATE TABLE animals_continents (
         animal_id integer,
 	continent_id integer
