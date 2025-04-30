@@ -11,65 +11,110 @@ import sys
 def main(input_filename):
     animals = [] # List to store animal data
     AnimalDict= {} # Dictionary to store unique animals (still testing something with table linking)
+    PlacesDict={}
+    CountriesDict={}
+    populationTrendDict={}
+    populationStatusDict={}
+
+    LinkTable=[]
 
     with open(input_filename) as f:
         reader = csv.reader(f)
+       # next(reader)  # Skip the header row
         for csv_row in reader:
-           AnimalName = csv_row[0]  # Animal name
-           Species = csv_row[1] 
-           LifeSpan = csv_row[2] 
-           Place = csv_row[3]
-           PopulationTrend = csv_row[4]
-           PopulationStatus = csv_row[5]
-           name_key = f'{AnimalName}+{Species}+{LifeSpan}' #( still testing something with table linking)
+            
+            AnimalName = csv_row[0]  # Animal name
+            Species = csv_row[1] 
+            LifeSpan = csv_row[2] 
+            continents = csv_row[3] #( could chnage later be a continent or country,  Note :17 in animal_info.csv)  
+            countries=csv_row[4]
+            PopulationTrend = csv_row[5]
+            PopulationStatus = csv_row[6]
+
+
+            name_key = f'{AnimalName}+{Species}+{LifeSpan}' #( still testing something with table linking)
 
            
-           if name_key not in AnimalDict: # (Check if the animal is unique still testing table linking)
-            animal_id = len(animals) # Unique ID for the animal           
-            animals.append((animal_id, AnimalName, Species, LifeSpan, Place, PopulationTrend, PopulationStatus)) # Append animal data to the list
+            if name_key not in AnimalDict: # (Check if the animal is unique still testing table linking) 
+                animal_id = len(animals) +1 # Unique ID for the animal    
+                AnimalDict[name_key] = animal_id
+
+            animals.append((animal_id, AnimalName, Species, LifeSpan, continents,  countries, PopulationTrend, PopulationStatus)) # Append animal data to the list
             
-            # AnimalDict[name_key] = True  (dont worry about this still testing stuff)
+            
+            if continents not in PlacesDict: # (Check if the place is unique still testing table linking)
+                place_id = len(PlacesDict) + 1 # Unique ID for the place
+                PlacesDict[continents] = place_id
 
+            if countries not in CountriesDict:
+                country_id = len(CountriesDict) + 1
+                CountriesDict[countries] = country_id
 
-    with open('animalsID.csv', 'w') as f: #had to change the name of the file to animalsID.csv because we already have a file called animals.csv
-            writer = csv.writer(f)
-            for animal in animals:
-                row = (animal[0], animal[1], animal[2], animal[3])  # Animal ID, Name, Species, LifeSpan
-                writer.writerow(row) 
+            if PopulationTrend not in populationTrendDict:
+                population_id = len(populationTrendDict) + 1
+                populationTrendDict[PopulationTrend] = population_id
 
-    # with open('continents.csv', 'w') as f:
+            if PopulationStatus not in populationStatusDict:
+                population_id = len(populationStatusDict) + 1
+                populationStatusDict[PopulationStatus] = population_id
 
-    # with open ('countries.csv', 'w') as f:
+            LinkTable.append((AnimalDict[name_key], PlacesDict[continents], CountriesDict[countries], populationTrendDict[PopulationTrend], populationStatusDict[PopulationStatus])) # Append the animal ID and place ID to the linking table
 
+    
+
+    with open('animals.csv', 'w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(['AnimalID', 'Name', 'Species', 'LifeSpan'])
+        for animal in animals:
+            writer.writerow([animal[0], animal[1], animal[2], animal[3]])  
+
+    # Write continents/Place table
+    with open('Continents.csv', 'w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(['Continents', 'PlaceName'])
+        for place, place_id in PlacesDict.items():
+            writer.writerow([place_id, place])
+            
+    with open ('countries.csv', 'w') as f:
+        writer = csv.writer(f)
+        writer.writerow(['CountryID', 'CountryName'])
+        for country, country_id in CountriesDict.items():
+            writer.writerow([country_id, country])
+        
     with open ('populationtTrend.csv', 'w', newline='') as f:
         writer = csv.writer(f)
         for animal in animals:
-            row =  animal[0], [animal[5]]
-            writer.writerow(row)
+            writer.writerow([animal[0], animal[6]])
     
-
     with open ('populationStatus.csv', 'w') as f:
         writer = csv.writer(f)
         for animal in animals:
-            row =  animal[0] ,[animal[6]] # Animals ID and PopulationStatus
+            row =  animal[0] ,[animal[7]] # Animals ID and PopulationStatus
             writer.writerow(row)
+            
+    with open ('continents_countries.csv', 'w') as f:
+        writer = csv.writer(f)
+        writer.writerow(['CountryID', 'Continents'])
+        for link in LinkTable:
+            writer.writerow([link[2], link[1]])
+    
+    with open('animals_continents.csv', 'w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(['AnimalID', 'Continents'])
+        for link in LinkTable:
+            writer.writerow([link[0], link[1]])
 
-
-    # with open ('continents_countries.csv', 'w') as f:
-
-    # with open ('animals_continents.csv', 'w') as f:
-
-    # with open ('animals_countries.csv', 'w') as f:
+    with open ('animals_countries.csv', 'w') as f: 
+        writer = csv.writer(f)
+        writer.writerow(['AnimalID', 'CountryID'])
+        for link in LinkTable:
+            writer.writerow([link[0], link[2]])       
 
     with open ('animals_concern.csv', 'w') as f:
         writer = csv.writer(f)
-        for animal in animals:
-            row =  animal[0] ,[animal[5]], animal[6] # Animals ID and PopulationTrend, and PopulationStatus
-            writer.writerow(row)
-
-
-
-         
+        writer.writerow(['AnimalID', 'PopulationTrend', 'PopulationStatus'])
+        for link in LinkTable:
+            writer.writerow([link[0], link[3], link[4]]) 
 
 if len(sys.argv) != 2:
     print(f'Usage: {sys.argv[0]} original_csv_file', file=sys.stderr)
