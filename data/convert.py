@@ -64,32 +64,27 @@ def main(input_filename):
 
     with open('animals.csv', 'w', newline='') as f:
         writer = csv.writer(f)
-        writer.writerow(['AnimalID', 'Name', 'Species', 'LifeSpan'])
         for animal in animals:
             writer.writerow([animal[0], animal[1], animal[2], animal[3]])  
 
     # Write continents/Place table
     with open('Continents.csv', 'w', newline='') as f:
         writer = csv.writer(f)
-        writer.writerow(['ContinentsID', 'Continent'])
         for place, place_id in PlacesDict.items():
             writer.writerow([place_id, place])
             
     with open ('countries.csv', 'w') as f:
         writer = csv.writer(f)
-        writer.writerow(['CountryID', 'CountryName'])
         for country, country_id in CountriesDict.items():
             writer.writerow([country_id, country])
         
     with open ('populationtTrend.csv', 'w', newline='') as f:
         writer = csv.writer(f)
-        writer.writerow(['PopulationTrendID', 'PopulationTrend'])
         for trend, trend_id in populationTrendDict.items():
             writer.writerow([trend_id, trend])
 
     with open ('populationStatus.csv', 'w') as f:
         writer = csv.writer(f)
-        writer.writerow(['PopulationStatusID', 'PopulationStatus'])
         for status, status_id in populationStatusDict.items():
             writer.writerow([status_id, status])
             
@@ -101,19 +96,16 @@ def main(input_filename):
     
     with open('animals_continents.csv', 'w', newline='') as f:
         writer = csv.writer(f)
-        writer.writerow(['AnimalID', 'Continents'])
         for link in LinkTable:
             writer.writerow([link[0], link[1]])
 
     with open ('animals_countries.csv', 'w') as f: 
         writer = csv.writer(f)
-        writer.writerow(['AnimalID', 'CountryID'])
         for link in LinkTable:
             writer.writerow([link[0], link[2]])       
 
     with open ('animals_concern.csv', 'w') as f:
         writer = csv.writer(f)
-        writer.writerow(['AnimalID', 'PopulationTrend', 'PopulationStatus'])
         for link in LinkTable:
             writer.writerow([link[0], link[3], link[4]]) 
 
